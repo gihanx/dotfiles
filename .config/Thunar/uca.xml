@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>Alacritty</icon>
+	<name>Open Terminal Here</name>
+	<unique-id>1667849455553592-1</unique-id>
+	<command>alacritty --working-directory %f</command>
+	<description></description>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>nvim</icon>
+	<name>Edit in Nvim</name>
+	<unique-id>1667995597588182-1</unique-id>
+	<command>alacritty -e &quot;nvim&quot; %F</command>
+	<description></description>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+<action>
+	<icon>account-types-asset</icon>
+	<name>x</name>
+	<unique-id>1668029660786294-1</unique-id>
+	<command>Alacritty -e %F</command>
+	<description></description>
+	<patterns>*</patterns>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+</actions>
