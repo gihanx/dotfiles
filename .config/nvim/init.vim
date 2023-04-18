@@ -1,4 +1,5 @@
-colorscheme gruvbox
+:hi normal guibg=000000
+:colorscheme default 
 
 :set clipboard^=unnamed,unnamedplus
 

@@ -115,7 +115,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Keyboard map indicator and switcher
 -- mykeyboardlayout = awful.widget.keyboardlayout()
 
--- {{{ Wibar
+ --{{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
@@ -127,31 +127,31 @@ local taglist_buttons = gears.table.join(
                                                   client.focus:move_to_tag(t)
                                               end
                                           end),
-                    awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, function(t)
+                   awful.button({ }, 3, awful.tag.viewtoggle),
+                   awful.button({ modkey }, 3, function(t)
                                               if client.focus then
-                                                  client.focus:toggle_tag(t)
+                                                 client.focus:toggle_tag(t)
                                               end
                                           end),
-                    awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
+                   awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
                     awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
-                )
+               )
 
 local tasklist_buttons = gears.table.join(
                      awful.button({ }, 1, function (c)
                                               if c == client.focus then
-                                                  c.minimized = true
+                                                 c.minimized = true
                                               else
-                                                  c:emit_signal(
+                                                 c:emit_signal(
                                                       "request::activate",
                                                       "tasklist",
                                                       {raise = true}
                                                   )
                                               end
                                           end),
-                     awful.button({ }, 3, function()
+                    awful.button({ }, 3, function()
                                               awful.menu.client_list({ theme = { width = 250 } })
-                                          end),
+                                         end),
                      awful.button({ }, 4, function ()
                                               awful.client.focus.byidx(1)
                                           end),
@@ -179,17 +179,17 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "MAIN", "WEB", "WORK", "PLAY", "EXTRA" }, s, awful.layout.layouts[1])
+    awful.tag({ "1", "2", "3", "4", "5", "6" }, s, awful.layout.layouts[1])
 
-    -- Create a promptbox for each screen
+--    -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
-    s.mylayoutbox = awful.widget.layoutbox(s)
+   s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
                            awful.button({ }, 1, function () awful.layout.inc( 1) end),
                            awful.button({ }, 3, function () awful.layout.inc(-1) end),
-                           awful.button({ }, 4, function () awful.layout.inc( 1) end),
+                          awful.button({ }, 4, function () awful.layout.inc( 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
@@ -208,23 +208,28 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "bottom", screen = s })
 
-    -- Add widgets to the wibox
+   -- Add widgets to the wibox
     s.mywibox:setup {
+    layout = wibox.layout.stack,
+    {
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
-            s.mytaglist,
-            s.mypromptbox,
-        },
-        s.mytasklist, -- Middle widget
+                    wibox.widget.systray(),
+
+		},
+        nil,
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-         -- mykeyboardlayout,
-            wibox.widget.systray(),
             mytextclock,
-         -- s.mylayoutbox,
-        },
+		},
+    },
+    {
+        s.mytaglist,
+        valign = "center",
+        halign = "center",
+        layout = wibox.container.place
+    }
     }
 end)
 -- }}}
@@ -322,7 +327,7 @@ globalkeys = gears.table.join(
 
     -- Rofi 
     awful.key({ modkey },            "r",     function () 
-    awful.util.spawn("rofi -show run") end,
+    awful.util.spawn("rofi -show drun") end,
               {description = "Rofi", group = "gihan"}),
 
     -- Brave
@@ -335,16 +340,16 @@ globalkeys = gears.table.join(
     awful.util.spawn("thunar")  end,
               {description = "Thunar", group = "gihan"}),
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
+ --   awful.key({ modkey }, "x",
+ --             function ()
+ --                 awful.prompt.run {
+ --                   prompt       = "Run Lua code: ",
+ --                   textbox      = awful.screen.focused().mypromptbox.widget,
+ --                   exe_callback = awful.util.eval,
+ --                   history_path = awful.util.get_cache_dir() .. "/history_eval"
+ --                 }
+ --             end,
+ --             {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"})
@@ -371,7 +376,7 @@ clientkeys = gears.table.join(
         function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
-            c.minimized = true
+            c.minimized = false 
         end ,
         {description = "minimize", group = "client"}),
     awful.key({ modkey,           }, "m",
@@ -587,3 +592,5 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 --Autoruns
 awful.spawn.with_shell("nitrogen --restore")
 awful.spawn.with_shell("compton")
+--awful.spawn.with_shell("kmix")
+--awful.spawn.with_shell("/home/gihan/.config/polybar/launch.sh")
